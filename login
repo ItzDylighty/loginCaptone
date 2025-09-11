@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  SafeAreaView,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { StyleSheet, View, Text, Image, SafeAreaView, TouchableOpacity, Alert, } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { Link, useRouter } from "expo-router";
 import { supabase } from "../supabase/supabaseClient";

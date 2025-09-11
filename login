@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Image, SafeAreaView, TouchableOpacity, Alert, } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  SafeAreaView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { Input, Button } from "react-native-elements";
 import { Link, useRouter } from "expo-router";
 import { supabase } from "../supabase/supabaseClient";
@@ -10,18 +18,16 @@ import * as Linking from "expo-linking";
 WebBrowser.maybeCompleteAuthSession();
 
 const LoginScreen = () => {
+  // ---------- State ----------
   const [focusedInput, setFocusedInput] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+
   const router = useRouter();
+  const commonInputContainerStyle = { borderBottomWidth: 0, height: 30 };
 
-  const commonInputContainerStyle = {
-    borderBottomWidth: 0,
-    height: 30,
-  };
-
-  // Email + password login
+  // ---------- Email/Password Login ----------
   const handleLogin = async () => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -42,11 +48,9 @@ const LoginScreen = () => {
     }
   };
 
-  // Google OAuth login
+  // ---------- Google OAuth Login ----------
   const handleGoogleLogin = async () => {
     try {
-      await supabase.auth.signOut();
-
       const redirectUrl = Linking.createURL("/auth/callback", {
         scheme: "capstonereact",
       });
@@ -97,15 +101,19 @@ const LoginScreen = () => {
     }
   };
 
+  // ---------- UI ----------
   return (
     <SafeAreaView style={styles.container}>
+      {/* Logo */}
       <Image
         source={require("../assets/Museo_Logo.png")}
         style={styles.logo}
       />
+
+      {/* Title */}
       <Text style={styles.title}>LOGIN</Text>
 
-      {/* Email */}
+      {/* Email Input */}
       <View style={styles.inputWrapper}>
         {!email && <Text style={styles.placeholderText}>Email</Text>}
         <Input
@@ -124,7 +132,7 @@ const LoginScreen = () => {
         />
       </View>
 
-      {/* Password */}
+      {/* Password Input */}
       <View style={styles.inputWrapper}>
         {!password && <Text style={styles.placeholderText}>Password</Text>}
         <Input
@@ -142,10 +150,12 @@ const LoginScreen = () => {
         />
       </View>
 
+      {/* Forgot Password */}
       <TouchableOpacity style={styles.forgotPasswordContainer}>
         <Text style={styles.forgotPassword}>Forgot your password?</Text>
       </TouchableOpacity>
 
+      {/* Login Button */}
       <Button
         title="Login with Email"
         onPress={handleLogin}
@@ -154,8 +164,10 @@ const LoginScreen = () => {
         containerStyle={styles.loginButtonContainer}
       />
 
+      {/* Error Message */}
       {message ? <Text style={styles.errorMsg}>{message}</Text> : null}
 
+      {/* Signup Link */}
       <View style={styles.signupContainer}>
         <Text style={styles.signupText}>Create Account?</Text>
         <Link href="/signup" style={styles.signupLink}>
@@ -163,7 +175,7 @@ const LoginScreen = () => {
         </Link>
       </View>
 
-      {/* Google Button */}
+      {/* Google Login Button */}
       <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
         <Image
           source={require("../assets/googlelogo.jpg")}
@@ -175,6 +187,9 @@ const LoginScreen = () => {
   );
 };
 
+export default LoginScreen;
+
+// ---------- Styles ----------
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -190,8 +205,16 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginBottom: 30,
   },
-  title: { fontSize: 22, fontWeight: "bold", color: "#000", marginBottom: 8 },
-  inputWrapper: { width: "100%", position: "relative" },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#000",
+    marginBottom: 8,
+  },
+  inputWrapper: {
+    width: "100%",
+    position: "relative",
+  },
   placeholderText: {
     position: "absolute",
     top: 17,
@@ -208,11 +231,27 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingHorizontal: 5,
   },
-  focusedContainer: { borderColor: "#000", borderWidth: 2 },
-  inputStyle: { fontSize: 18, color: "#000", top: 12, textAlignVertical: "center" },
-  forgotPasswordContainer: { alignSelf: "flex-end", marginBottom: 30 },
-  forgotPassword: { fontSize: 14, color: "#888" },
-  loginButtonContainer: { width: "100%" },
+  focusedContainer: {
+    borderColor: "#000",
+    borderWidth: 2,
+  },
+  inputStyle: {
+    fontSize: 18,
+    color: "#000",
+    top: 12,
+    textAlignVertical: "center",
+  },
+  forgotPasswordContainer: {
+    alignSelf: "flex-end",
+    marginBottom: 30,
+  },
+  forgotPassword: {
+    fontSize: 14,
+    color: "#888",
+  },
+  loginButtonContainer: {
+    width: "100%",
+  },
   loginButton: {
     backgroundColor: "#fff",
     borderRadius: 30,
@@ -220,10 +259,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#000",
   },
-  loginButtonTitle: { fontSize: 18, fontWeight: "bold", color: "#000" },
-  signupContainer: { flexDirection: "row", marginTop: 25 },
-  signupText: { fontSize: 16, color: "#888" },
-  signupLink: { fontSize: 16, fontWeight: "bold", color: "#000", marginLeft: 5 },
+  loginButtonTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#000",
+  },
+  signupContainer: {
+    flexDirection: "row",
+    marginTop: 25,
+  },
+  signupText: {
+    fontSize: 16,
+    color: "#888",
+  },
+  signupLink: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#000",
+    marginLeft: 5,
+  },
   googleButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -243,9 +297,14 @@ const styles = StyleSheet.create({
     marginRight: 10,
     resizeMode: "contain",
   },
-  googleText: { fontSize: 16, color: "#000" },
-  errorMsg: { color: "red", marginTop: 10 },
+  googleText: {
+    fontSize: 16,
+    color: "#000",
+  },
+  errorMsg: {
+    color: "red",
+    marginTop: 10,
+  },
 });
 
-export default LoginScreen;
 

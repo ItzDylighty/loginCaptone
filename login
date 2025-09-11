@@ -45,7 +45,6 @@ const LoginScreen = () => {
   // Google OAuth login
   const handleGoogleLogin = async () => {
     try {
-      // ✅ Always sign out first to clear any active session
       await supabase.auth.signOut();
 
       const redirectUrl = Linking.createURL("/auth/callback", {

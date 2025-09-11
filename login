@@ -53,6 +53,9 @@ const LoginScreen = () => {
   // Google OAuth login
   const handleGoogleLogin = async () => {
     try {
+      // ✅ Always sign out first to clear any active session
+      await supabase.auth.signOut();
+
       const redirectUrl = Linking.createURL("/auth/callback", {
         scheme: "capstonereact",
       });
@@ -89,7 +92,10 @@ const LoginScreen = () => {
           }
 
           if (sessionData?.session) {
-            console.log("Logged in with Google:", sessionData.session.user.email);
+            console.log(
+              "Logged in with Google:",
+              sessionData.session.user.email
+            );
             router.replace("/home");
           }
         }
@@ -251,3 +257,4 @@ const styles = StyleSheet.create({
 });
 
 export default LoginScreen;
+
